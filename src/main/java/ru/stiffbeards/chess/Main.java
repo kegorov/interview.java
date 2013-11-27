@@ -7,7 +7,15 @@ public class Main {
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
 
-        AnsiConsole.out.println("Hello World");
-        AnsiConsole.out.println(args[0]);
+        Desk desk = new Desk();
+        for (String arg: args) {
+            try {
+                desk.move(arg);
+            } catch (Exception e) {
+                AnsiConsole.out.println(e.getMessage());
+            }
+        }
+
+        AnsiConsole.out.println(desk.dump());
     }
 }

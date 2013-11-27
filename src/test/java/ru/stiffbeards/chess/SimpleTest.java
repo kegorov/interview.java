@@ -117,10 +117,10 @@ public class SimpleTest {
         String[] empty = {};
         Main.main(moves.isEmpty() ? empty : moves.split(" "));
         if (isCorrect) {
-            Assert.assertEquals("Moves are correct, but chess thinks there is an error:\n" + movesDesc + "\n", "", errContent.toString());
+            Assert.assertEquals("\n\n\033[31mMoves are correct, but chess thinks there is an error:\n" + movesDesc + "\033[m\n\n", "", errContent.toString());
             Assert.assertEquals(StringUtils.join(lines, "\n") + "\n\n", outContent.toString());
         } else {
-            Assert.assertNotEquals("Moves are invalid, but chess does not detect that:\n" + movesDesc + "\n", "", errContent.toString());
+            Assert.assertNotEquals("\n\n\033[31mMoves are invalid, but chess does not detect that:\n" + movesDesc + "\033[m\n\n", "", errContent.toString());
         }
     }
 }

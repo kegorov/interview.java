@@ -15,6 +15,9 @@ dependencies {
     compile 'com.google.guava:guava:15.0'
 }
 
-test.testLogging { exceptionFormat "full" }
+test.testLogging { 
+    exceptionFormat "full"
+    showStackTraces false
+}
 
 mainClassName = "ru.stiffbeards.chess.Main"

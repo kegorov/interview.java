@@ -34,9 +34,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
-        <finalName>Chess</finalName>
+        <finalName>interview</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

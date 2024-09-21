@@ -7,6 +7,10 @@ public abstract class Figure {
         this.isBlack = isBlack;
     }
 
+    public boolean isBlack() {
+        return isBlack;
+    }
+
     @Override
     public String toString() {
         return super.toString();

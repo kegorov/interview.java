@@ -2,13 +2,17 @@ package ru.stiffbeards.chess;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import ru.stiffbeards.chess.checks.DelegatingMoveChecker;
+import ru.stiffbeards.chess.checks.MoveChecker;
 import ru.stiffbeards.chess.figures.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Desk {
-    private Table<Integer, Character, Figure> figures = HashBasedTable.create();
+    private final Table<Integer, Character, Figure> figures = HashBasedTable.create();
+    private final List<Move> records = new ArrayList<>();
+    private final MoveChecker checker = new DelegatingMoveChecker(figures, records);
 
     public Desk() {
         figures.put(1, 'a', new Rook(false));
@@ -49,21 +53,14 @@ public class Desk {
     }
 
     public void move(String move) throws Exception {
-        Pattern movePattern = Pattern.compile("^([a-h])(\\d)-([a-h])(\\d)$");
-        Matcher moveMatcher = movePattern.matcher(move);
-        if (!moveMatcher.matches()) {
-            throw new Exception("Incorrect move");
+        Move mv = Moves.fromString(move);
+        if (figures.contains(mv.getyFrom(), mv.getxFrom())) {
+            Figure figure = figures.get(mv.getyFrom(), mv.getxFrom());
+            checker.check(figure, mv);
+            figures.remove(mv.getyFrom(), mv.getxFrom());
+            figures.put(mv.getyTo(), mv.getxTo(), figure);
+            records.add(mv);
         }
-
-        Character xFrom = moveMatcher.group(1).charAt(0);
-        Integer yFrom = Integer.parseInt(moveMatcher.group(2));
-        Character xTo = moveMatcher.group(3).charAt(0);
-        Integer yTo = Integer.parseInt(moveMatcher.group(4));
-
-        if (figures.contains(yFrom, xFrom)) {
-            figures.put(yTo, xTo, figures.get(yFrom, xFrom));
-        }
-        figures.remove(yFrom, xFrom);
     }
 
     public String dump() {
